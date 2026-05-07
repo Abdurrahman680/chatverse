@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from 'uuid';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { email, password, name } = await req.json();
 

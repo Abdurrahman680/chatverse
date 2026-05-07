@@ -1,15 +1,15 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { chatId: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
 ) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { chatId } = params;
+  const { chatId } = await params;
 
   await db.query(
     'DELETE FROM "Chat" WHERE id = $1 AND "userId" = $2',

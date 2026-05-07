@@ -1,33 +1,35 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from 'uuid';
 import { generateAIResponse } from "@/lib/gemini";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { chatId: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
 ) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { chatId } = await params;
+
   const result = await db.query(
     'SELECT * FROM "Message" WHERE "chatId" = $1 ORDER BY "createdAt" ASC',
-    [params.chatId]
+    [chatId]
   );
 
   return NextResponse.json(result.rows);
 }
 
 export async function POST(
-  req: Request,
-  { params }: { params: { chatId: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ chatId: string }> }
 ) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { content } = await req.json();
-  const { chatId } = params;
+  const { chatId } = await params;
 
   // Save user message
   const userMsgId = uuidv4();
