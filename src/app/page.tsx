@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, Github, ChevronDown, Zap, Shield, Sparkles } from "lucide-react";
+import { Bot, ExternalLink, ChevronDown, Zap, Shield, Sparkles } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -34,7 +34,7 @@ export default function LandingPage() {
               Initiate Connection
             </Link>
             <a href="https://github.com" target="_blank" className="cta-secondary">
-              <Github size={20} />
+              <ExternalLink size={20} />
               View Source
             </a>
           </div>
