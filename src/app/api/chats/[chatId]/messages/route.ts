@@ -44,7 +44,7 @@ export async function POST(
   const history = historyResult.rows;
 
   try {
-    const messages = history.map(m => ({
+    const messages = history.map((m: { role: string, content: string }) => ({
       role: m.role === 'assistant' ? 'assistant' : 'user',
       content: m.content
     }));
